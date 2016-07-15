@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.anon.DAO.ImTestPOJOMapper">
+  <resultMap id="ImTestPOJOBaseResultMap" type="com.anon.test.ImTestPOJO">
+    <id column="id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+    <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    <result column="age" property="age" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+  </resultMap>
+  <!--Simple:Base SQL-->
+  <sql id="Base_Column_List">id,age,name</sql>
+  <!--Simple:Select By Page List-->
+  <select id="selectByPageNo" resultMap="ImTestPOJOBaseResultMap" parameterType="java.util.Map">
+	SELECT  
+    <include refid="Base_Column_List"/>
+	FROM NoTable ORDER BY NoTable.id ASC LIMIT #{pageNo},#{pageSize}
+  </select>
+  <!--Simple:Get sum of table rows-->
+  <select id="selectCount" resultType="java.lang.Integer">
+	SELECT COUNT(*) FROM NoTable
+	</select>
+  <!--Simple:Get getSimpleList for show-->
+  <select id="getSimpleList" resultMap="ImTestPOJOBaseResultMap">
+	SELECT *
+	FROM NoTable ORDER BY NoTable.id ASC</select>
+  <!--Simple:Get object by ID-->
+  <select id="selectByPrimaryKey" resultMap="ImTestPOJOBaseResultMap" parameterType="java.lang.Integer">
+	SELECT  
+    <include refid="Base_Column_List"/> 
+	FROM NoTable WHERE id = #{id,jdbcType=INTEGER}
+  </select>
+  <!--Simple:Delete Object by ID-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+	DELETE FROM NoTable
+	WHERE id = #{id,jdbcType=INTEGER}
+	</delete>
+  <!--Simple:Insert Object-->
+  <insert id="insertSelective" parameterType="com.anon.test.ImTestPOJO">
+	INSERT INTO NoTable
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+		id,
+	</if>
+      <if test="age != null">
+		age,
+	</if>
+      <if test="name != null">
+		name,
+	</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+		#{id,jdbcType=INTEGER},
+	</if>
+      <if test="age != null">
+		#{age,jdbcType=INTEGER},
+	</if>
+      <if test="name != null">
+		#{name,jdbcType=VARCHAR},
+	</if>
+    </trim>
+  </insert>
+  <!--Simple:Update Object by ID-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.anon.test.ImTestPOJO">
+	UPDATE  NoTable
+    <set>
+      <if test="id != null">
+		id = #{id,jdbcType=INTEGER},
+	</if>
+      <if test="age != null">
+		age = #{age,jdbcType=INTEGER},
+	</if>
+      <if test="name != null">
+		name = #{name,jdbcType=VARCHAR},
+	</if>
+    </set>
+		WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
