@@ -11,7 +11,7 @@ public class TestGenerate {
 
         MyBatisXMLAutoCreateController con = new MyBatisXMLAutoCreateController();
 
-        con.createMyBatisSimplePOJOXML(false,ImTestPOJO.class,"id","NoTable");
+        con.createMyBatisSimplePOJOXML(true,ImTestPOJO.class,"id","NoTable");
 
     }
 }

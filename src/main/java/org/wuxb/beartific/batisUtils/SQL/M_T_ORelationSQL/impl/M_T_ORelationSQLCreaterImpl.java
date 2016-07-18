@@ -13,12 +13,12 @@ public class M_T_ORelationSQLCreaterImpl implements M_T_ORelationSQLCreater{
 	/**
 	 * -----------------------------------ONE TO MANY----------------------------------------------------------
 	 */
-	
+
 	/**
-	 * 
-	 * @function һ�Զ��б��ѯ
-	 * @author ���಩
-	 * @time 2016-2-23 ����9:36:47
+	 *
+	 * @function 一对多列表查询
+	 * @author 吴相博
+	 * @time 2016-2-23 上午9:36:47
 	 */
 	public void createOneToManySelectListSQL(Element rootElement,Class<?> One_POJO,String One_POJO_tableName,String Many_POJO_tableName,
 			String One_POJOIdentification,
@@ -74,12 +74,12 @@ public class M_T_ORelationSQLCreaterImpl implements M_T_ORelationSQLCreater{
 	     
 		
 	}
-	
+
 	/**
-	 * 
-	 * @function һ�Զ���ID��ѯ
-	 * @author ���಩
-	 * @time 2016-2-23 ����9:48:21
+	 *
+	 * @function 一对多根据ID查询
+	 * @author 吴相博
+	 * @time 2016-2-23 上午9:48:21
 	 */
 	public void createOneToManySelectByIdSQL(Element rootElement,Class<?> One_POJO,String One_POJO_tableName,String Many_POJO_tableName,
 			String One_POJOIdentification,
@@ -111,13 +111,13 @@ public class M_T_ORelationSQLCreaterImpl implements M_T_ORelationSQLCreater{
 	     
 		
 	}
-	
-	
+
+
 	/**
-	 * 
-	 * @function һ�Զ�ɾ��
-	 * @author ���಩
-	 * @time 2016-2-24 ����6:42:21
+	 *
+	 * @function 一对多删除
+	 * @author 吴相博
+	 * @time 2016-2-24 下午6:42:21
 	 */
 	public void createOneToManyDeleteSQL(Element rootElement,String One_POJO_tableName,String One_POJOIdentification,
 			String Many_POJO_tableName,
@@ -165,12 +165,12 @@ public class M_T_ORelationSQLCreaterImpl implements M_T_ORelationSQLCreater{
 	     deleteO_T_MByPrimaryKeyEle.addText(sql_deleteO_T_MByPrimaryKeyBuffer.toString());
 		
 	};
-	
+
 	/**
-	 * 
-	 * @function һ�Զ�����޸�
-	 * @author ���಩
-	 * @time 2016-2-24 ����8:05:32
+	 *
+	 * @function 一对多关联修改
+	 * @author 吴相博
+	 * @time 2016-2-24 下午8:05:32
 	 */
 	public void createOneToManyUpdateWithRelationSQL(Element rootElement,Class<?> One_POJO,String Many_POJO_tableName,String One_POJOIdentification,
 			String One_POJO_tableName,String Many_POJOIdentification,String O_T_M_Field,
@@ -280,12 +280,12 @@ public class M_T_ORelationSQLCreaterImpl implements M_T_ORelationSQLCreater{
 	/**
 	 * -----------------------------------MANY TO ONE-----------------------------------------------
 	 */
-	
+
 	/**
-	 * 
-	 * @function ���һ�޸�Sql
-	 * @author ���಩
-	 * @time 2016-2-22 ����8:06:04
+	 *
+	 * @function 多对一修改Sql
+	 * @author 吴相博
+	 * @time 2016-2-22 下午8:06:04
 	 */
 	public void createManyToOneUpdateSQL(Element rootElement,Class<?> Many_POJO,String Many_POJO_tableName,
 			String One_POJO_tableName,String M_T_O_Field,String One_POJOIdentification,String Many_POJOIdentification,
@@ -345,10 +345,10 @@ public class M_T_ORelationSQLCreaterImpl implements M_T_ORelationSQLCreater{
 		
 	}
 	/**
-	 * 
-	 * @function �������һ���ID��ѯ
-	 * @author ���಩
-	 * @time 2016-2-22 ����7:22:42
+	 *
+	 * @function 创建多对一根据ID查询
+	 * @author 吴相博
+	 * @time 2016-2-22 下午7:22:42
 	 */
 	public void createManyToOneSelectById(Element rootElement,Class<?> Many_POJO,String Many_POJO_tableName,String Many_POJOIdentification,
 			String idType,
@@ -387,10 +387,10 @@ public class M_T_ORelationSQLCreaterImpl implements M_T_ORelationSQLCreater{
 		
 	}
 	/**
-	 * 
-	 * @function �������һ���
-	 * @author ���಩
-	 * @time 2016-2-22 ����7:22:27
+	 *
+	 * @function 创建多对一添加
+	 * @author 吴相博
+	 * @time 2016-2-22 下午7:22:27
 	 */
 	public void createManyToOneInsertSQL(Element rootElement,Class<?> Many_POJO,
 			String Many_POJO_tableName,String One_POJO_tableName,String M_T_O_Field,
@@ -470,10 +470,10 @@ public class M_T_ORelationSQLCreaterImpl implements M_T_ORelationSQLCreater{
 		
 	}
 	/**
-	 * 
-	 * @function ���һ��SQL
-	 * @author ���಩
-	 * @time 2016-2-22 ����6:06:11
+	 *
+	 * @function 多对一基础SQL
+	 * @author 吴相博
+	 * @time 2016-2-22 下午6:06:11
 	 */
 	public void manyToOneBaseColumnSQL(Element rootElement,String Many_POJO_tableName,String One_POJOIdentification,
 			String idType,
@@ -507,10 +507,10 @@ public class M_T_ORelationSQLCreaterImpl implements M_T_ORelationSQLCreater{
 		
 	};
 	/**
-	 * 
-	 * @function ���һ��ҳSQL
-	 * @author ���಩
-	 * @time 2016-2-22 ����6:10:14
+	 *
+	 * @function 多对一分页SQL
+	 * @author 吴相博
+	 * @time 2016-2-22 下午6:10:14
 	 */
 	public void manyToOneSelectByPageSQL(Element rootElement,Class<?> Many_POJO,String Many_POJO_tableName,
 			String One_POJO_tableName,String One_POJOIdentification,

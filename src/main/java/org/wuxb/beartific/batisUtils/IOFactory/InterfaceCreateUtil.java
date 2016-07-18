@@ -24,7 +24,7 @@ public class InterfaceCreateUtil extends InterfaceCreateClass{
 		String classDeclared = "public interface "+interfaceName+"{";
 		String end = "}";
 		String importEntity = "import "+targetClass.getName()+";";
-		BufferedWriter interfaceWriter = null;//����д�ķ�װ�ַ���
+		BufferedWriter interfaceWriter = null;//声明写的封装字符流
 		try {
 			
 			

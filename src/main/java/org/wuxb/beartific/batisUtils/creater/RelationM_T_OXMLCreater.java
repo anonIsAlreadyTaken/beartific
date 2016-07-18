@@ -42,25 +42,26 @@ public class RelationM_T_OXMLCreater {
 			
 			){
 		/**
-		 * ������,��ȡ���·��
+		 * 创建包,获取绝对路径
 		 */
 		basePath = CreateStepinitialClass.firstStepOfXmlCreate(Many_POJO, collectionOfJDBCAndJAVATypeConvert, basePath, 
 				 DAOPACKAGENAME, MAPPERPACKAGENAME, collectionOfAbsolutePath, BASEPATH, 
 				 DAOPATH, MAPPERPATH);
 		 //System.out.println(basePath);
-		 /**
-		  * ��ɸ�XML��resultMap
-		  */
-		 
-		 Document rootDocument = DocumentHelper.createDocument();
+		/**
+		 * 生成根XML和resultMap
+		 */
+
+
+		Document rootDocument = DocumentHelper.createDocument();
 	     WithRelationFieldFactor factor = (WithRelationFieldFactor) RelationM_T_OResultMapMaker.MakeM_T_ORelationResultMap(rootDocument, Many_POJO, One_POJO, idType, DAOPATH, basePath, BASEPATH, MAPPERPATH, DAOPACKAGENAME, MAPPERPACKAGENAME, One_POJO_tableName, RESULTMAPPER_ID_NAME, Many_POJO_tableName, Many_POJOIdentification, One_POJOIdentification, collectionOfAbsolutePath, collectionOfTableInfo, collectionOfSqlInfo, collectionOfJDBCAndJAVATypeConvert);
-	    
-	     /**
-	      * ���SQL���
-	      */
+
+		/**
+		 * 生成SQL语句
+		 */
 	     writeRelationM_T_OXMLSQL(factor.getRelationField(), Many_POJO, One_POJO, factor.getIdType(), One_POJO_tableName, Many_POJO_tableName, factor.getRootElement(), Many_POJOIdentification, One_POJOIdentification, RESULTMAPPER_ID_NAME, collectionOfTableInfo, collectionOfSqlInfo, collectionOfJDBCAndJAVATypeConvert);
 	     //System.out.println(basePath);
-	     //дxml
+	     //写xml
 	     XMLWriteUtils.createXMLByRootDocument(rootDocument, Many_POJO, basePath, MAPPERPACKAGENAME);
 	    
 	     return basePath;

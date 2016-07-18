@@ -36,30 +36,30 @@ public class RelationO_T_MResultMapMaker {
 		 
 		 
 	     rootDocument.addDocType("mapper", "-//mybatis.org//DTD Mapper 3.0//EN", "http://mybatis.org/dtd/mybatis-3-mapper.dtd");
-	     //�����
+	     //创建根
 	     Element rootElement = rootDocument.addElement("mapper");
 	     String mapperDAOPathWay = basePath+".DAO."+One_POJO.getSimpleName()+"Mapper";
 	     Many_POJO.getPackage();
 	     rootElement.addAttribute("namespace", mapperDAOPathWay);
-	     //�ڸ��мӵ�һ���ӽڵ�
+	     //添加首个元素
 	     Element elementResultMap = rootElement.addElement("resultMap");
 	     RESULTMAPPER_ID_NAME = One_POJO.getSimpleName()+RESULTMAPPER_ID_NAME;
 	     elementResultMap.addAttribute("id", RESULTMAPPER_ID_NAME);
 	     elementResultMap.addAttribute("type", One_POJO.getName());
 	     Element ElementClassID = elementResultMap.addElement("id");
 	     Field[]declaredFields = One_POJO.getDeclaredFields();
-	     
-	     //tableInfo.put("tableName", tableName);
+
+		//tableInfo.put("tableName", tableName);
 	     /*
-	      * ����ResultMap,��װ��collectionOfTableInfo�б���Ϣ
+	      * 创建ResultMap,并装入collectionOfTableInfo中表信息
 	      */
 	     for (Field Onefield : declaredFields) {
 	    	 
 	    	 /**
 	    	  * ----------------------2.22------------------------------
 	    	  */
-	    	 /*
-	    	  * ��֤�Ƿ���Collection
+	    	/*
+	    	  * 验证是否是Collection
 	    	  */
 	    	 boolean isCollectionValue = Onefield.getGenericType().toString().contains("<"+Many_POJO.getName()+">");
 	    	

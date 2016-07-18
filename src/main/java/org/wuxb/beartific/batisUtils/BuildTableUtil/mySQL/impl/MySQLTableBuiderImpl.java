@@ -22,10 +22,10 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 	private static String url;
 	private static String userName;
 	private static String password;
-	
-	
+
+
 	/**
-	 * ���JDBC������������
+	 * 获得JDBC链接所需属性
 	 */
 	static {
 		
@@ -55,9 +55,8 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 			
 			boolean flag = e.getClass().getSimpleName().equals("NullPointerException");
 			if(flag){
-				
-				System.out.println("ע��DB.properties�е��������:driver,url,userName,password");
-				
+
+				System.out.println("MySQLTableBuiderImpl:生成表时没找到DB.properties,请添加至src并且按规范命名");
 			}
 			
 			
@@ -87,13 +86,13 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 				Class.forName(Driver);
 				conn = DriverManager.getConnection(url,userName,password);
 			} catch (ClassNotFoundException e) {
-				System.out.println("ClassNotFoundException:���properties�е�Driver");
+				System.out.println("ClassNotFoundException:检查properties中的Driver");
 				e.printStackTrace();
 			} catch (SQLException e) {
-				System.out.println("SQLException:���properties�ļ��е�url,userName,password�����ò���");
+				System.out.println("SQLException:检查properties文件中的url,userName,password等配置参数");
 				e.printStackTrace();
 			}catch(NullPointerException e){
-				System.out.println("ע��DB.properties�е��������:driver,url,userName,password");
+				System.out.println("检查DB.properties中的如下配置:driver,url,userName,password");
 				e.printStackTrace();
 			}
 		
@@ -109,7 +108,7 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 			try {
 				rs.close();
 			} catch (Exception e) {
-				System.out.println("������ʧ��");
+				System.out.println("结果集关流失败");
 				e.printStackTrace();
 			}
 		}
@@ -117,7 +116,7 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 			try {
 				st.close();
 			} catch (Exception e) {
-				System.out.println("��������ʧ��");
+				System.out.println("结果集关流失败");
 				e.printStackTrace();
 			}
 		}
@@ -125,7 +124,7 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 			try {
 				conn.close();
 			} catch (Exception e) {
-				System.out.println("���ӹ���ʧ��");
+				System.out.println("结果集关流失败");
 				e.printStackTrace();
 			}
 		}
@@ -156,10 +155,10 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 
 	}
 	/**
-	 * 
-	 * @function �򵥽ṹ�����
-	 * @author ���಩
-	 * @time 2016-2-28 ����7:43:05
+	 *
+	 * @function 简单结构表生成
+	 * @author 吴相博
+	 * @time 2016-2-28 下午7:43:05
 	 */
 	public void itIsSimpleTableBuildingTime(
 			Map<String, Map<String, String>> collectionOfTableInfo,String identification) {
@@ -206,10 +205,10 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 	}
 
 	/**
-	 * 
-	 * @function ���һ�ṹ�����
-	 * @author ���಩
-	 * @time 2016-2-28 ����7:43:26
+	 *
+	 * @function 多对一结构表生成
+	 * @author 吴相博
+	 * @time 2016-2-28 下午7:43:26
 	 */
 	public void itIsSimpleTableBuildingTime(
 			Map<String, Map<String, String>> collectionOfTableInfo,String Many_POJO_identification,String One_POJO_identification,String Many_POJO_tableName,String One_POJO_tableName) {
@@ -237,7 +236,7 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 			if(string.equals(Many_POJO_tableName)){
 				
 			}
-			//ɾ���
+			//删除表
 			String removeTable = "DROP TABLE `"+string+"`";
 			//System.out.println(removeTable);
 			executeSQL(removeTable);
@@ -254,7 +253,7 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 				.append(",");
 				
 			}
-			//��������
+			//添加外键列
 			if(string.equals(Many_POJO_tableName)){
 				
 				TableSQL.append("`"+One_POJO_identification+"`");
@@ -262,7 +261,7 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 				String one_id_type = oneTableMap.get(One_POJO_identification);
 				TableSQL.append(" ").append(one_id_type).append(" NULL,");
 			}
-			//ȷ������
+			//确认主键
 			if(string.equals(Many_POJO_tableName)){
 				
 				TableSQL.append("PRIMARY KEY (`").append(Many_POJO_identification).append("`))");
@@ -288,7 +287,7 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 		 * 
 		 * */
 		/*
-		 * ���Լ��?
+		 * 添加约束?
 		 * 
 		 */
 		StringBuffer referencesKey = new StringBuffer();
@@ -305,10 +304,10 @@ public class MySQLTableBuiderImpl implements MySQLTableBuider{
 
 
 	/**
-	 * 
-	 * @function ��Զ�����
-	 * @author ���಩
-	 * @time 2016-2-28 ����7:54:31
+	 *
+	 * @function 多对多表生成
+	 * @author 吴相博
+	 * @time 2016-2-28 下午7:54:31
 	 */
 	public void itIsSimpleTableBuildingTime(Map<String, Map<String, String>> collectionOfTableInfo,String identification2,String tableName2,String identification1,String tableName1,String MappingTableName){
 		

@@ -30,12 +30,12 @@ public class SimplePOJOResultMapMaker {
 		
 		
 		rootDocument.addDocType("mapper", "-//mybatis.org//DTD Mapper 3.0//EN", "http://mybatis.org/dtd/mybatis-3-mapper.dtd");
-	     //�����
+	     //创建根
 	     Element rootElement = rootDocument.addElement("mapper");
 	     String mapperDAOPathWay = basePath+".DAO."+cls.getSimpleName()+"Mapper";
 	     cls.getPackage();
 	     rootElement.addAttribute("namespace", mapperDAOPathWay);
-	     //�ڸ��мӵ�һ���ӽڵ�
+	     //添加首个元素
 	     Element elementResultMap = rootElement.addElement("resultMap");
 	     elementResultMap.addAttribute("id", cls.getSimpleName()+RESULTMAPPER_ID_NAME);
 	     elementResultMap.addAttribute("type", cls.getName());

@@ -31,10 +31,10 @@ public class RelationM_T_MXMLCreater {
 		basePath = CreateStepinitialClass.firstStepOfXmlCreate(ManyPOJO1, collectionOfJDBCAndJAVATypeConvert, basePath, 
 				 DAOPACKAGENAME, MAPPERPACKAGENAME, collectionOfAbsolutePath, BASEPATH, 
 				 DAOPATH, MAPPERPATH);
-		
+
 		/**
-		  * ��ɸ�XML��resultMap
-		  */
+		 * 生成根XML和resultMap
+		 */
 		 
 		 Document rootDocument = DocumentHelper.createDocument();
 		 WithRelationFieldFactor factor = (WithRelationFieldFactor) RelationM_T_MResultMapMaker.MakeM_T_MResultMap(rootDocument,

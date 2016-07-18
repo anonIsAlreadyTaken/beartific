@@ -9,13 +9,13 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
 public class XMLWriteUtils {
-	
-/**
- * 	
- * @function ���XML���
- * @author ���಩
- * @time 2016-2-27 ����6:27:37
- */
+
+	/**
+	 *
+	 * @function 完成XML生成
+	 * @author 吴相博
+	 * @time 2016-2-27 下午6:27:37
+	 */
 public static void createXMLByRootDocument(Document rootDocument,Class<?> cls,String basePath,String MAPPERPACKAGENAME){
 		
 		Writer writer = null;
@@ -28,8 +28,8 @@ public static void createXMLByRootDocument(Document rootDocument,Class<?> cls,St
 			
 			e.printStackTrace();
 		}
-	   
-	     //��ʽ��xml
+
+	//格式化xml
 	     OutputFormat format = new OutputFormat();
 	     format.setNewlines(true);
 	     format.setIndentSize(2);

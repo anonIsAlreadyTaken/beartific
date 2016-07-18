@@ -7,12 +7,12 @@ import org.wuxb.beartific.batisUtils.buidPath.BuildPackagePathClass;
 import org.wuxb.beartific.batisUtils.converter.JDBCAndJavaTypeConverter;
 
 public class CreateStepinitialClass {
-	
+
 	/**
-	 * 
-	 * @function ��ʼ������
-	 * @author ���಩
-	 * @time 2016-2-27 ����4:31:10
+	 *
+	 * @function 初始化创建
+	 * @author 吴相博
+	 * @time 2016-2-27 下午4:31:10
 	 */
 	public static String firstStepOfXmlCreate(Class<?> cls,Map<String, String> collectionOfJDBCAndJAVATypeConvert,
 											   String basePath,

@@ -19,8 +19,8 @@ import java.util.Properties;
 
 
 /**
- * 
- *��ݿ����ӹ����� 
+ *
+ *数据库连接工具类 
  * @author Anon
  **/
 public class DButils {
@@ -31,9 +31,9 @@ public class DButils {
 	private static String password;
 
 	/**
-	 * 
-	 *��̬�����DB.properties�ļ� 
-	 * 
+	 *
+	 *静态块加载DB.properties文件 
+	 *
 	 **/
 	static{
 
@@ -67,34 +67,34 @@ public class DButils {
 	/**
 	 *
 	 *@author Anon
-	 * 
-	 *@return ����Connectionʵ��,�����Զ�ȡDB.properties�ļ�
+	 *
+	 *@return 返回Connection实例,其属性读取DB.properties文件
 	 *
 	 **/
 	public static Connection getConnection(){
 		Connection conn = null;
-		
-			try {
-				Class.forName(Driver);
-				conn = DriverManager.getConnection(url,userName,password);
-			} catch (ClassNotFoundException e) {
-				System.out.println("ClassNotFoundException:���properties�е�Driver");
-				e.printStackTrace();
-			} catch (SQLException e) {
-				System.out.println("SQLException:���properties�ļ��е�url,userName,password�����ò���");
-				e.printStackTrace();
-			}
-		
+
+		try {
+			Class.forName(Driver);
+			conn = DriverManager.getConnection(url,userName,password);
+		} catch (ClassNotFoundException e) {
+			System.out.println("ClassNotFoundException:检查properties中的Driver");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("SQLException:检查properties文件中的url,userName,password等配置参数");
+			e.printStackTrace();
+		}
+
 		return conn;
 
 	}
 	/**
-	 * 
-	 * @author Anon
-	 * 
-	 *@function ����
 	 *
-	 * 
+	 * @author Anon
+	 *
+	 *@function 关流
+	 *
+	 *
 	 **/
 	public static void free(ResultSet rs,Statement st,Connection conn){
 
@@ -102,7 +102,7 @@ public class DButils {
 			try {
 				rs.close();
 			} catch (Exception e) {
-				System.out.println("������ʧ��");
+				System.out.println("结果集关流失败");
 				e.printStackTrace();
 			}
 		}
@@ -110,7 +110,7 @@ public class DButils {
 			try {
 				st.close();
 			} catch (Exception e) {
-				System.out.println("��������ʧ��");
+				System.out.println("声明关流失败");
 				e.printStackTrace();
 			}
 		}
@@ -118,7 +118,7 @@ public class DButils {
 			try {
 				conn.close();
 			} catch (Exception e) {
-				System.out.println("���ӹ���ʧ��");
+				System.out.println("连接关流失败");
 				e.printStackTrace();
 			}
 		}
@@ -126,20 +126,20 @@ public class DButils {
 	}
 
 	/**
-	 * 
-	 *<p>���Listչʾ�б� </p>
-	 * 
+	 *
+	 *<p>获得List展示列表 </p>
+	 *
 	 * @author Anon
-	 * 
-	 * @function ��ý���List<?>������ʽ
-	 * 
-	 * @param c javaBean��Classʵ��
-	 * 
-	 * @param sql:��Ҫִ�е�SQL��䡣
-	 * 
-	 * @return ��ѯ���
-	 * 
-	 * ʹ�ø÷������뱣֤��ݿ����ֶ�����javaBean���������Ӧ��һ��,����javaBean��Ӧ���ڿղι���
+	 *
+	 * @function 获得结果集的List<?>表现形式
+	 *
+	 * @param c javaBean的Class实例。
+	 *
+	 * @param sql:需要执行的SQL语句。
+	 *
+	 * @return 查询结果集
+	 *
+	 * 使用该方法必须保证数据库中字段名与javaBean的属性名对应相一致,并且javaBean中应存在空参构造
 	 **/
 	@SuppressWarnings("unchecked")
 	public static List<?> getList(Class<?> c,String sql){
@@ -149,35 +149,35 @@ public class DButils {
 		ResultSet rs = null;
 		ArrayList objList = new ArrayList();
 
-		
-			try {
-				ps = conn.prepareStatement(sql);
-				rs = ps.executeQuery();
-				Object obj = null;
-				ResultSetMetaData metaData = rs.getMetaData();
-				int columnCount = metaData.getColumnCount();
 
-				while(rs.next()){
-					obj = c.newInstance();
-					for (int i = 1; i <= columnCount; i++) {
-						BeanUtils.setProperty(obj, metaData.getColumnName(i), rs.getObject(i));
-					}
-					objList.add(obj);
+		try {
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			Object obj = null;
+			ResultSetMetaData metaData = rs.getMetaData();
+			int columnCount = metaData.getColumnCount();
+
+			while(rs.next()){
+				obj = c.newInstance();
+				for (int i = 1; i <= columnCount; i++) {
+					BeanUtils.setProperty(obj, metaData.getColumnName(i), rs.getObject(i));
 				}
-			} catch (SQLException e) {
-				System.out.println("SQLException:�����ݿ���������javaBean���������Ƿ���ͬ");
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				System.out.println("InstantiationException:���javaBean���Ƿ�����޲ι���");
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				System.out.println("IllegalAccessException:����Ƿ����set,get�������Ƿ���ڿղι���");
-				e.printStackTrace();
-			}finally{
-				
-				free(rs, ps, conn);
+				objList.add(obj);
 			}
-		
+		} catch (SQLException e) {
+			System.out.println("SQLException:检查数据库中列名与javaBean中属性名是否相同");
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			System.out.println("InstantiationException:检查javaBean中是否存在无参构造");
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			System.out.println("IllegalAccessException:检查是否存在set,get方法，是否存在空参构造");
+			e.printStackTrace();
+		}finally{
+
+			free(rs, ps, conn);
+		}
+
 		return objList;
 
 	}
@@ -186,12 +186,12 @@ public class DButils {
 	 *
 	 *@author Anon
 	 *
-	 *@function ִ������ɾ���ĵ�SQL��� 
+	 *@function 执行增，删，改的SQL语句 
 	 *
-	 *@param Ҫִ�е�SQL���
+	 *@param 要执行的SQL语句
 	 *
-	 *@return ����ִ���Ƿ�ɹ�
-	 * 
+	 *@return 返回执行是否成功
+	 *
 	 **/
 	public static boolean executeSQL(String sql){
 
@@ -206,7 +206,7 @@ public class DButils {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("SQLException:���SQL���");
+			System.out.println("SQLException:检查SQL语句");
 			e.printStackTrace();
 		}finally{
 
@@ -217,18 +217,18 @@ public class DButils {
 		return false;
 	}
 	/**
-	 * 
+	 *
 	 *@author Anon
-	 * 
-	 *@function ͨ��id�õ�ʵ����� 
 	 *
-	 *@param c javaBean��Classʵ��
+	 *@function 通过id得到实例对象
 	 *
-	 *@param sql ��Ҫִ�е�SQL��䡣
+	 *@param c javaBean的Class实例。
 	 *
-	 *@return ���ز��ҵ��Ķ���
+	 *@param sql 需要执行的SQL语句。
 	 *
-	 *ʹ�ø÷������뱣֤��ݿ����ֶ�����javaBean���������Ӧ��һ��,����javaBean��Ӧ���ڿղι���
+	 *@return 返回查找到的对象
+	 *
+	 *使用该方法必须保证数据库中字段名与javaBean的属性名对应相一致,并且javaBean中应存在空参构造
 	 **/
 	public static Object getObjById(Class<?> c,String sql){
 
@@ -237,127 +237,127 @@ public class DButils {
 		ResultSet rs = null;
 		Object obj = null;
 
-			try {
-				ps = conn.prepareStatement(sql);
-				rs = ps.executeQuery();
+		try {
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
 
-				ResultSetMetaData metaData = rs.getMetaData();
-				int columnCount = metaData.getColumnCount();
+			ResultSetMetaData metaData = rs.getMetaData();
+			int columnCount = metaData.getColumnCount();
 
-				if(rs.next()){
-					obj = c.newInstance();
-					for (int i = 1; i <= columnCount; i++) {
-						BeanUtils.setProperty(obj, metaData.getColumnName(i), rs.getObject(i));
-					}
-				
-}
-			} catch (SQLException e) {
-				System.out.println("SQLException:���SQL���");
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				System.out.println("InstantiationException:���javaBean���Ƿ�����޲ι���");
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				System.out.println("IllegalAccessException:����Ƿ����set,get�������Ƿ���ڿղι���");
-				e.printStackTrace();
-			} finally{
-				
-				free(rs, ps, conn);
+			if(rs.next()){
+				obj = c.newInstance();
+				for (int i = 1; i <= columnCount; i++) {
+					BeanUtils.setProperty(obj, metaData.getColumnName(i), rs.getObject(i));
+				}
+
 			}
+		} catch (SQLException e) {
+			System.out.println("SQLException:检查SQL语句");
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			System.out.println("InstantiationException:检查javaBean中是否存在无参构造");
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			System.out.println("IllegalAccessException:检查是否存在set,get方法，是否存在空参构造");
+			e.printStackTrace();
+		} finally{
+
+			free(rs, ps, conn);
+		}
 
 
 		return obj;
 
 
 	}
-	
+
 	/**
-	 * 
+	 *
 	 *@author Anon
-	 * 
-	 *@function ��ñ���������� 
 	 *
-	 *@param sql ��ѯ����ʱ�õ���SQL���
+	 *@function 获得表中数据条数
 	 *
-	 *@return �����ܹ����������
+	 *@param sql 查询条数时用到的SQL语句
+	 *
+	 *@return 返回总共的数据条数
 	 *
 	 **/
 	public static int getCountOfTable(String sql){
-		
+
 		Connection conn = getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int result = 0;
-		
+
 		try {
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			if(rs.next()){
-				
+
 				result = rs.getInt(1);
-				
+
 			}
 		} catch (SQLException e) {
-			System.out.println("SQLException:���SQL���");
+			System.out.println("SQLException:检查SQL语句");
 			e.printStackTrace();
 		}finally{
-			
+
 			free(rs, ps, conn);
 		}
 		return result;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @author Anon
-	 * 
-	 * @function ִ������
-	 * 
-	 * @param sqlArray ��Ҫִ�е������е����
-	 * 
-	 * 
-	 * 
+	 *
+	 * @function 执行事务
+	 *
+	 * @param sqlArray 需要执行的事务中的语句
+	 *
+	 *
+	 *
 	 **/
 	public static boolean executeTransaction(String...sqlArray){
-		
+
 		Connection conn = getConnection();
 		PreparedStatement ps = null;
-		
+
 		try {
 			conn.setAutoCommit(false);
-			
+
 			for (String sql : sqlArray) {
-				
+
 				ps = conn.prepareStatement(sql);
 				ps.executeUpdate();
-				
+
 			}
 
 			conn.commit();
 			conn.setAutoCommit(true);
 			return true;
-			
+
 		} catch (SQLException e) {
-			
-			
+
+
 			try {
-				System.out.println("����ִ�г��ִ��󣬼��SQL���");
+				System.out.println("事务执行出现错误，检查SQL语句");
 				conn.rollback();
 			} catch (SQLException e1) {
 
 				e1.printStackTrace();
 			}
 			e.printStackTrace();
-			
+
 		}finally{
-			
+
 			free(null, ps, conn);
-			
+
 		}
-		
+
 		return false;
-		
-		
+
+
 	}
 
 }

@@ -29,12 +29,12 @@ public class RelationM_T_MResultMapMaker {
 		 RESULTMAPPER_ID_NAME = "BaseResultMap";
 		 
 	     rootDocument.addDocType("mapper", "-//mybatis.org//DTD Mapper 3.0//EN", "http://mybatis.org/dtd/mybatis-3-mapper.dtd");
-	     //�����
+	     //创建根
 	     Element rootElement = rootDocument.addElement("mapper");
 	     String mapperDAOPathWay = basePath+".DAO."+ManyPOJO1.getSimpleName()+"Mapper";
 	     ManyPOJO1.getPackage();
 	     rootElement.addAttribute("namespace", mapperDAOPathWay);
-	   //�ڸ��мӵ�һ���ӽڵ�
+	   //创建首个元素
 	     Element elementResultMap = rootElement.addElement("resultMap");
 	     RESULTMAPPER_ID_NAME = ManyPOJO1.getSimpleName()+RESULTMAPPER_ID_NAME;
 	     elementResultMap.addAttribute("id", RESULTMAPPER_ID_NAME);
@@ -42,9 +42,9 @@ public class RelationM_T_MResultMapMaker {
 	     Element ElementClassID = elementResultMap.addElement("id");
 	     Field[]declaredFields = ManyPOJO1.getDeclaredFields();
 	     HashMap<String, String> tableInfoMany1 = new HashMap<String, String>();
-	     //tableInfo.put("tableName", tableName);
+		//tableInfo.put("tableName", tableName);
 	     /*
-	      * ����ResultMap,��װ��collectionOfTableInfo�б���Ϣ
+	      * 创建ResultMap,并装入collectionOfTableInfo中表信息
 	      */
 	     for (Field Manyfield1 : declaredFields) {
 	    	 

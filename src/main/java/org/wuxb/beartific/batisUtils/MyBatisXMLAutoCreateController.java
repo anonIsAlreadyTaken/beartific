@@ -18,38 +18,38 @@ public class MyBatisXMLAutoCreateController {
 	private final String BASEPATH = "basePathLocation";
 	private final String DAOPATH = "DAOPathLocation";
 	private final String MAPPERPATH = "MapperPathLocation";
-	
+
 	/**
-	 * 锟斤拷目录 eg:org.wuxb
+	 * 跟目录 eg:org.wuxb
 	 */
 	private String basePath;
 	/**
-	 * 锟斤拷锟斤拷锟斤拷String
+	 * 工具型String
 	 */
 	private final String DAOPACKAGENAME = "DAO\\";
 	private final String MAPPERPACKAGENAME = "Mapper\\";
 	/**
-	 * id锟斤拷锟皆碉拷Java锟斤拷锟斤拷
+	 * id属性的Java类型
 	 */
 	private static String idType;
 	/**
-	 * DAO,Mapper,锟酵伙拷锟侥撅拷锟铰凤拷锟�
+	 * DAO,Mapper,和基本包的绝对路径
 	 */
 	private Map<String, String> collectionOfAbsolutePath = new HashMap<String, String>();
 	/**
-	 * JAVA锟斤拷锟絁DBC锟斤拷锟斤拷锟斤拷投锟接︼拷锟较拷锟斤拷锟�
+	 * JAVA类和JDBC类的类型对应信息容器
 	 */
 	private Map<String, String> collectionOfJDBCAndJAVATypeConvert = new HashMap<String, String>();
 	/**
-	 * 锟斤拷锟斤拷息锟斤拷锟斤拷锟斤拷K:锟斤拷锟斤拷,V:锟街讹拷锟斤拷息
+	 * 表信息容器，K:表名,V:字段信息
 	 */
 	private Map<String, Map<String, String>> collectionOfTableInfo = new HashMap<String, Map<String, String>>();
 	/**
-	 * sql锟斤拷锟斤拷锟较拷锟斤拷锟�K:sql锟斤拷锟絀D,V:锟斤拷锟斤拷锟斤拷锟斤拷值
+	 * sql语句信息容器 K:sql语句ID,V:需求参数及返回值
 	 */
 	private Map<String, Map<String, String>> collectionOfSqlInfo = new HashMap<String, Map<String, String>>();
 	/**
-	 * 锟斤拷准MapperResult锟斤拷ID
+	 * 基准MapperResult的ID
 	 */
 	private String RESULTMAPPER_ID_NAME = "BaseResultMap";
 	
@@ -67,7 +67,7 @@ public class MyBatisXMLAutoCreateController {
 		
 		if(needTable){
 			/**
-			 * 锟斤拷锟斤拷锟斤拷
+			 * 创建表
 			 */
 			MySQLTableBuider builder = new MySQLTableBuiderImpl();
 			builder.itIsSimpleTableBuildingTime(collectionOfTableInfo,identification);
@@ -93,7 +93,7 @@ public class MyBatisXMLAutoCreateController {
 		
 		if(needTable){
 			/**
-			 * 锟斤拷锟斤拷锟斤拷
+			 * 创建表
 			 */
 			MySQLTableBuider builder = new MySQLTableBuiderImpl();
 			builder.itIsSimpleTableBuildingTime(collectionOfTableInfo, Many_POJOIdentification, One_POJOIdentification,Many_POJO_tableName,One_POJO_tableName);
@@ -117,7 +117,7 @@ public class MyBatisXMLAutoCreateController {
 		
 		if(needTable){
 			/**
-			 * 锟斤拷锟斤拷锟斤拷
+			 * 创建表
 			 */
 			MySQLTableBuider builder = new MySQLTableBuiderImpl();
 			builder.itIsSimpleTableBuildingTime(collectionOfTableInfo, identification2, tableName2, identification1, tableName1, MappingTableName);

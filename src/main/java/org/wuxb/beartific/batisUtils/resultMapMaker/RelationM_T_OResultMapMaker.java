@@ -35,12 +35,12 @@ public class RelationM_T_OResultMapMaker {
 		String M_T_O_Field = "";
 		 
 	     rootDocument.addDocType("mapper", "-//mybatis.org//DTD Mapper 3.0//EN", "http://mybatis.org/dtd/mybatis-3-mapper.dtd");
-	     //�����
+	     //创建根
 	     Element rootElement = rootDocument.addElement("mapper");
 	     String mapperDAOPathWay = basePath+".DAO."+Many_POJO.getSimpleName()+"Mapper";
 	     Many_POJO.getPackage();
 	     rootElement.addAttribute("namespace", mapperDAOPathWay);
-	     //�ڸ��мӵ�һ���ӽڵ�
+	     //创建首个元素
 	     Element elementResultMap = rootElement.addElement("resultMap");
 	     RESULTMAPPER_ID_NAME = Many_POJO.getSimpleName()+RESULTMAPPER_ID_NAME;
 	     elementResultMap.addAttribute("id", RESULTMAPPER_ID_NAME);
@@ -49,9 +49,9 @@ public class RelationM_T_OResultMapMaker {
 	     Field[] declaredFields = Many_POJO.getDeclaredFields();
 	     HashMap<String, String> tableInfoMany = new HashMap<String, String>();
 	     HashMap<String, String> tableInfoOne = new HashMap<String, String>();
-	     //tableInfo.put("tableName", tableName);
+		//tableInfo.put("tableName", tableName);
 	     /*
-	      * ����ResultMap,��װ��collectionOfTableInfo�б���Ϣ
+	      * 创建ResultMap,并装入collectionOfTableInfo中表信息
 	      */
 	     for (Field Manyfield : declaredFields) {
 	    	 
@@ -120,9 +120,9 @@ public class RelationM_T_OResultMapMaker {
 			
 		 }
 	     
-	     /*
+	    /*
 	      * Tip:
-	      * ����ͨ�����One����������ʱʹ��tType.tid�ķ�ʽ��������Many���ж����tid�ֶ�
+	      * 可以通过调用One方主键属性时使用tType.tid的方式来避免在Many类中多添加tid字段
 	      * 
 	      * <sql id=base_Column_List>
 	      */

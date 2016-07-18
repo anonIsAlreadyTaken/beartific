@@ -17,45 +17,45 @@ import org.dom4j.io.XMLWriter;
 
 
 public class PasteFactory {
-	
+
 	/**
-	 * ȡ���·��ʱ��Key
+	 * 取绝对路径时的Key
 	 */
 	private final String BASEPATH = "basePathLocation";
 	private final String DAOPATH = "DAOPathLocation";
 	private final String MAPPERPATH = "MapperPathLocation";
-	
+
 	/**
-	 * ��Ŀ¼ eg:org.wuxb
+	 * 跟目录 eg:org.wuxb
 	 */
 	private String basePath;
 	/**
-	 * ������String
+	 * 工具型String
 	 */
 	private final String DAOPACKAGENAME = "DAO\\";
 	private final String MAPPERPACKAGENAME = "Mapper\\";
 	/**
-	 * id���Ե�Java����
+	 * id属性的Java类型
 	 */
 	private String idType;
 	/**
-	 * DAO,Mapper,�ͻ��ľ��·��
+	 * DAO,Mapper,和基本包的绝对路径
 	 */
 	private Map<String, String> collectionOfAbsolutePath = new HashMap<String, String>();
 	/**
-	 * JAVA���JDBC������Ͷ�Ӧ��Ϣ����
+	 * JAVA类和JDBC类的类型对应信息容器
 	 */
 	private Map<String, String> collectionOfJDBCAndJAVATypeConvert = new HashMap<String, String>();
 	/**
-	 * ����Ϣ������K:����,V:�ֶ���Ϣ
+	 * 表信息容器，K:表名,V:字段信息
 	 */
 	private Map<String, Map<String, String>> collectionOfTableInfo = new HashMap<String, Map<String, String>>();
 	/**
-	 * sql�����Ϣ���� K:sql���ID,V:��������ֵ
+	 * sql语句信息容器 K:sql语句ID,V:需求参数及返回值
 	 */
 	private Map<String, Map<String, String>> collectionOfSqlInfo = new HashMap<String, Map<String, String>>();
 	/**
-	 * ��׼MapperResult��ID
+	 * 基准MapperResult的ID
 	 */
 	private String RESULTMAPPER_ID_NAME = "BaseResultMap";
 	
@@ -70,14 +70,14 @@ public class PasteFactory {
 		//pf.createMyBatisMany_To_ManyXML(Role.class, "rid", "ssh_role", User.class, "sid", "ssh_user", "ssh_user_role");
 		//pf.createMyBatisMany_To_ManyXML(User.class, "sid", "ssh_user", Role.class, "rid", "ssh_role", "ssh_user_role");
 	}
-	
-	
-	
+
+
+
 	/**
-	 * @serialNo 1.ִ������1
-	 * @function ����JAVA��JDBC����ת������
-	 * @author ���಩
-	 * @time 2016-2-21 ����6:02:33
+	 * @serialNo 1.执行序列1
+	 * @function 创建JAVA和JDBC类型转换容器
+	 * @author 吴相博
+	 * @time 2016-2-21 下午6:02:33
 	 */
 	private void buildJDBCAndJavaTypeConvert(){
 		
@@ -92,29 +92,29 @@ public class PasteFactory {
 		
 		
 	}
-	
+
 	/**
-	 * @serialNo 2.ִ������2
-	 * @function ����DAO���Mapper��
-	 * @author ���಩
-	 * @time 2016-2-18 ����9:38:12
+	 * @serialNo 2.执行序列2
+	 * @function 创建DAO包和Mapper包
+	 * @author 吴相博
+	 * @time 2016-2-18 上午9:38:12
 	 */
 	private Map<String, String> makeDAOAndMapperPackage(Class<?> c) throws IOException{
 		
-		//��ð���
+		//获得包名
 		String packageName = c.getPackage().getName();
 		int lastIndexOfSpace = packageName.lastIndexOf(" ");
-		//�����õİ���
+		//处理获得的包名
 		String forUserPackageName = packageName.substring(lastIndexOfSpace+1);
-		//�����õİ���
+		//处理获得的包名
 		int lastIndexOfCut = packageName.lastIndexOf('.');
 		basePath = packageName.substring(lastIndexOfSpace+1,lastIndexOfCut);
-		//�õ������������·��
+		//获得文件相对路径
 		String entityLocation = "src/"+forUserPackageName.replace('.','/')+"/"+c.getSimpleName()+".java";
-		//�õ��������ľ��·��
+		//获得文件绝对路径
 		File file = new File(entityLocation);
 		String absoluteEntityLocation = file.getAbsolutePath();
-		//������·����ƴ��DAO����Mapper���ַ
+		//处理绝对路径，拼接DAO层与Mapper层地址
 		int indexOf = absoluteEntityLocation.lastIndexOf('\\');
 		String middleElement = absoluteEntityLocation.substring(0, indexOf);
 		String basePath = middleElement.substring(0, middleElement.lastIndexOf('\\'))+"\\";
@@ -136,13 +136,13 @@ public class PasteFactory {
 	return collectionOfAbsolutePath;
 		
 	}
-	
+
 	/**
-	 * 
-	 * @function �������1,2
-	 * @author ���಩
-	 * @time 2016-2-21 ����7:12:59
-	 * @param cls �����
+	 *
+	 * @function 整合序列1,2
+	 * @author 吴相博
+	 * @time 2016-2-21 下午7:12:59
+	 * @param cls 类对象
 	 */
 	private void firstStepOfXmlCreate(Class<?> cls){
 		
@@ -154,15 +154,15 @@ public class PasteFactory {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * @serialNo 3.ִ������3
-	 * @function �����򵥵�����ɾ�Ĳ�XML
-	 * @author ���಩
-	 * @time 2016-2-21 ����6:04:34
-	 * @param cls ������������
-	 * @param identification ����ı�ʶ����
-	 * @param tableName �����Ӧ�ı���
+	 * @serialNo 3.执行序列3
+	 * @function 创建简单单表增删改查XML
+	 * @author 吴相博
+	 * @time 2016-2-21 下午6:04:34
+	 * @param cls 操作类的类对象
+	 * @param identification 该类的标识属性
+	 * @param tableName 该类对应的表名
 	 */
 	public void createMyBatisPOJOXML(Class<?> cls,String identification,String tableName){
 		
@@ -170,12 +170,12 @@ public class PasteFactory {
 		 
 		 Document rootDocument = DocumentHelper.createDocument();
 	     rootDocument.addDocType("mapper", "-//mybatis.org//DTD Mapper 3.0//EN", "http://mybatis.org/dtd/mybatis-3-mapper.dtd");
-	     //�����
+	     //加入根
 	     Element rootElement = rootDocument.addElement("mapper");
 	     String mapperDAOPathWay = basePath+".DAO."+cls.getSimpleName()+"Mapper";
 	     cls.getPackage();
 	     rootElement.addAttribute("namespace", mapperDAOPathWay);
-	     //�ڸ��мӵ�һ���ӽڵ�
+	     //在根中加入第一个子节点
 	     Element elementResultMap = rootElement.addElement("resultMap");
 	     elementResultMap.addAttribute("id", RESULTMAPPER_ID_NAME);
 	     elementResultMap.addAttribute("type", cls.getName());
@@ -212,12 +212,12 @@ public class PasteFactory {
 	     
 	     /*
 	      * 
-	      * <sql/>�ڵ� ����SQL
-	      * 
+	      * <sql/>节点 公用SQL
+	      *
 	      * */
-	     createBaseColumnSQL(rootElement,tableName);
+		createBaseColumnSQL(rootElement,tableName);
 	     /*
-	      * <select id='selectByPageNo'/>�ڵ� ��ҳ�б�
+	      * <select id='selectByPageNo'/>节点 分页列表
 	      */
 	     createSimpleSelectByPageSQL(rootElement,tableName,cls);
 	     
@@ -229,46 +229,47 @@ public class PasteFactory {
 	      */
 	     createSelectCountSQL(rootElement,tableName);
 	     
+
 	     /*
-	      * <select id='selectByPrimaryKey'/>�ڵ� ��ݱ�ʶ���Բ��Ҷ���
+	      * <select id='selectByPrimaryKey'/>节点 根据标识属性查找对象
 	      */
-	     createSimpleSelectByIdSQL(rootElement,tableName,cls,identification);
+		createSimpleSelectByIdSQL(rootElement,tableName,cls,identification);
 	     /*
-	      * 2/20:��һ����ҳ��ѯSQL�����ɳɹ�
-	      * TIP:Ѱ��DOM4J���XML���з���(�ѽ��:�Զ���OutPutFormat,����ת��)
-	      * 
+	      * 2/20:第一条分页查询SQL语句生成成功
+	      * TIP:寻找DOM4J生成XML换行方法(已解决:自定义OutPutFormat,避免转义)
+	      *
 	      * ===================================================================================
-	      * 
-	      * 
+	      *
+	      *
 	      * */
 	     /*
-	      * <delete id='deleteByPrimaryKey'/>�ڵ� ɾ�����
+	      * <delete id='deleteByPrimaryKey'/>节点 删除对象
 	      */
 	     createSimpleDeleteByIdSQL(rootElement,tableName,identification);
 	     /*
-	      * <insert id='insertSelective'/>�ڵ� ���Ӷ���
+	      * <insert id='insertSelective'/>节点 增加对象
 	      */
-	     createSimpleInsertSQL(rootElement, tableName, cls);
-	    
+		createSimpleInsertSQL(rootElement, tableName, cls);
+
 	     /*
-	      * <update id='updateByPrimaryKeySelective'/>�ڵ� �޸Ķ���(���ɸ���)
+	      * <update id='updateByPrimaryKeySelective'/>节点 修改对象(不可赋空)
 	      */
-	     createSimpleUpdateSelectiveSQL(rootElement, tableName, cls, identification);
-	     
-	    
-	     
-	     //дxml
-	   
-	     createXMLByRootDocument(rootDocument,cls);
+		createSimpleUpdateSelectiveSQL(rootElement, tableName, cls, identification);
+
+
+
+		//写xml
+
+		createXMLByRootDocument(rootDocument,cls);
 		
 	    
 	}
 
 	/**
-	 * 
-	 * @function ���һ�����ļ����
-	 * @author ���಩
-	 * @time 2016-2-21 ����8:20:52
+	 *
+	 * @function 多对一配置文件生成
+	 * @author 吴相博
+	 * @time 2016-2-21 下午8:20:52
 	 */
 	public void createMyBatisMany_TO_OneXML(Class<?> Many_POJO,String Many_POJOIdentification,String Many_POJO_tableName,Class<?> One_POJO,String One_POJOIdentification,String One_POJO_tableName){
 		
@@ -282,12 +283,12 @@ public class PasteFactory {
 		 
 		 Document rootDocument = DocumentHelper.createDocument();
 	     rootDocument.addDocType("mapper", "-//mybatis.org//DTD Mapper 3.0//EN", "http://mybatis.org/dtd/mybatis-3-mapper.dtd");
-	     //�����
+	     //加入根
 	     Element rootElement = rootDocument.addElement("mapper");
 	     String mapperDAOPathWay = basePath+".DAO."+Many_POJO.getSimpleName()+"Mapper";
 	     Many_POJO.getPackage();
 	     rootElement.addAttribute("namespace", mapperDAOPathWay);
-	     //�ڸ��мӵ�һ���ӽڵ�
+	     //在根中加入第一个子节点
 	     Element elementResultMap = rootElement.addElement("resultMap");
 	     RESULTMAPPER_ID_NAME = Many_POJO.getSimpleName()+RESULTMAPPER_ID_NAME;
 	     elementResultMap.addAttribute("id", RESULTMAPPER_ID_NAME);
@@ -298,7 +299,7 @@ public class PasteFactory {
 	     HashMap<String, String> tableInfoOne = new HashMap<String, String>();
 	     //tableInfo.put("tableName", tableName);
 	     /*
-	      * ����ResultMap,��װ��collectionOfTableInfo�б���Ϣ
+	      * 创建ResultMap,并装入collectionOfTableInfo中表信息
 	      */
 	     for (Field Manyfield : declaredFields) {
 	    	 
@@ -367,53 +368,53 @@ public class PasteFactory {
 			
 		 }
 	     
-	     /*
+	      /*
 	      * Tip:
-	      * ����ͨ�����One����������ʱʹ��tType.tid�ķ�ʽ��������Many���ж����tid�ֶ�
-	      * 
+	      * 可以通过调用One方主键属性时使用tType.tid的方式来避免在Many类中多添加tid字段
+	      *
 	      * <sql id=base_Column_List>
 	      */
-	     
-	     collectionOfTableInfo.put(One_POJO_tableName, tableInfoOne);
+
+
+		collectionOfTableInfo.put(One_POJO_tableName, tableInfoOne);
 	     collectionOfTableInfo.put(Many_POJO_tableName, tableInfoMany);
 		
 	    
 	     manyToOneBaseColumnSQL(rootElement,Many_POJO_tableName,One_POJOIdentification);
-	     
 	     /*
-	      * ���������ҳ
+	      * 两表联查分页
 	      */
 	     manyToOneSelectByPageSQL(rootElement,Many_POJO,Many_POJO_tableName,
 	 			One_POJO_tableName,One_POJOIdentification);
 	     
 	     /*
-	      * �б��������
+	      * 列表数据条数
 	      */
 	     createSelectCountSQL(rootElement,Many_POJO_tableName);
 	     
 	     /*
-	      * ���һ����
+	      * 多对一增加
 	      */
 	     createManyToOneInsertSQL(rootElement, Many_POJO, Many_POJO_tableName
 	    		 , One_POJO_tableName, M_T_O_Field, One_POJOIdentification);
 	    
 	     /*
-	      * ���һ���ID��ѯ
+	      * 多对一根据id查询
 	      */
 	     createManyToOneSelectById(rootElement, Many_POJO, Many_POJO_tableName, Many_POJOIdentification);
 	     
 	     /*
-	      * ���һɾ�� (��ͨɾ��)
+	      * 简单的根据id删除
 	      */
 	     createSimpleDeleteByIdSQL(rootElement, Many_POJO_tableName, Many_POJOIdentification);
 	     
 	     /*
-	      * ���һ�޸�
+	      * 多对一修改
 	      */
 	     createManyToOneUpdateSQL(rootElement, Many_POJO, Many_POJO_tableName, One_POJO_tableName, 
 	    		 M_T_O_Field, One_POJOIdentification, Many_POJOIdentification);
 	     /*
-	      * ����XML
+	      * 创建该XML
 	      */
 	     createXMLByRootDocument(rootDocument,Many_POJO);
 	     
@@ -426,12 +427,12 @@ public class PasteFactory {
 		 
 		 rootDocument = DocumentHelper.createDocument();
 	     rootDocument.addDocType("mapper", "-//mybatis.org//DTD Mapper 3.0//EN", "http://mybatis.org/dtd/mybatis-3-mapper.dtd");
-	     //�����
+	     //创建根
 	     rootElement = rootDocument.addElement("mapper");
 	     mapperDAOPathWay = basePath+".DAO."+One_POJO.getSimpleName()+"Mapper";
 	     Many_POJO.getPackage();
 	     rootElement.addAttribute("namespace", mapperDAOPathWay);
-	     //�ڸ��мӵ�һ���ӽڵ�
+	     //根中加入第一个子节点
 	     elementResultMap = rootElement.addElement("resultMap");
 	     RESULTMAPPER_ID_NAME = One_POJO.getSimpleName()+RESULTMAPPER_ID_NAME;
 	     elementResultMap.addAttribute("id", RESULTMAPPER_ID_NAME);
@@ -441,7 +442,7 @@ public class PasteFactory {
 	     
 	     //tableInfo.put("tableName", tableName);
 	     /*
-	      * ����ResultMap,��װ��collectionOfTableInfo�б���Ϣ
+	      * 创建ResultMap,并装入collectionOfTableInfo中表信息
 	      */
 	     for (Field Onefield : declaredFields) {
 	    	 
@@ -449,7 +450,7 @@ public class PasteFactory {
 	    	  * ----------------------2.22------------------------------
 	    	  */
 	    	 /*
-	    	  * ��֤�Ƿ���Collection
+	    	  *  验证是否是Collection
 	    	  */
 	    	 boolean isCollectionValue = Onefield.getGenericType().toString().contains("<"+Many_POJO.getName()+">");
 	    	
@@ -520,46 +521,46 @@ public class PasteFactory {
 		 }
 	     
 	     /*
-	      * ����һ�Զ��б��ѯ(��෽����)
+	      * 创建一对多列表查询(包含多方个体)
 	      */
 	     createOneToManySelectListSQL(rootElement, One_POJO, One_POJO_tableName, Many_POJO_tableName, One_POJOIdentification);
 	     /*
-	      * ����һ�Զ���ID��ѯ
+	      * 创建一对多根据id查询
 	      */
 	     createOneToManySelectByIdSQL(rootElement, One_POJO, One_POJO_tableName, Many_POJO_tableName, One_POJOIdentification);
 	     
-	     /*
-	      * ����һ�Զ�һ������(��)
+	    /*
+	      * 创建一对多一方增加(简单)
 	      */
-	     createSimpleInsertSQL(rootElement, One_POJO_tableName, One_POJO);
-	     
+		createSimpleInsertSQL(rootElement, One_POJO_tableName, One_POJO);
+
 	     /*
-	      * ����һ�Զ�һ���޸�(��)
+	      * 创建一对多一方修改(简单)
 	      */
-	     createSimpleUpdateSelectiveSQL(rootElement, One_POJO_tableName, One_POJO, One_POJOIdentification);
-	     
+		createSimpleUpdateSelectiveSQL(rootElement, One_POJO_tableName, One_POJO, One_POJOIdentification);
+
 	     /*
-	      * ����һ�Զ�һ��ɾ��(�����Ķ෽���������)
+	      * 创建一对多一方删除(关联的多方关联键将清空)
 	      */
-	     createOneToManyDeleteSQL(rootElement, One_POJO_tableName, One_POJOIdentification, Many_POJO_tableName);
-	     
+		createOneToManyDeleteSQL(rootElement, One_POJO_tableName, One_POJOIdentification, Many_POJO_tableName);
+
 	     /*
-	      * ����һ�Զ�����޸�
+	      * 创建一对多关联修改
 	      */
-	     createOneToManyWithRelationSQL(rootElement, One_POJO, Many_POJO_tableName, One_POJOIdentification, One_POJO_tableName, Many_POJOIdentification, O_T_M_Field);
-	     
+		createOneToManyWithRelationSQL(rootElement, One_POJO, Many_POJO_tableName, One_POJOIdentification, One_POJO_tableName, Many_POJOIdentification, O_T_M_Field);
+
 	     /*
-	      * ����XML
+	      * 创建XML
 	      */
 	     createXMLByRootDocument(rootDocument,One_POJO);
 		
 	};
-	
+
 	/**
-	 * 
-	 * @function ��Զ������ļ����
-	 * @author ���಩
-	 * @time 2016-2-25 ����10:54:58
+	 *
+	 * @function 多对多配置文件生成
+	 * @author 吴相博
+	 * @time 2016-2-25 上午10:54:58
 	 */
 	public void createMyBatisMany_To_ManyXML(Class<?> ManyPOJO1,String identification1,String tableName1,Class<?> ManyPOJO2,String identification2,String tableName2,String MappingTableName){
 		
@@ -570,12 +571,12 @@ public class PasteFactory {
 		 RESULTMAPPER_ID_NAME = "BaseResultMap";
 		 Document rootDocument = DocumentHelper.createDocument();
 	     rootDocument.addDocType("mapper", "-//mybatis.org//DTD Mapper 3.0//EN", "http://mybatis.org/dtd/mybatis-3-mapper.dtd");
-	     //�����
+	     //创建根
 	     Element rootElement = rootDocument.addElement("mapper");
 	     String mapperDAOPathWay = basePath+".DAO."+ManyPOJO1.getSimpleName()+"Mapper";
 	     ManyPOJO1.getPackage();
 	     rootElement.addAttribute("namespace", mapperDAOPathWay);
-	   //�ڸ��мӵ�һ���ӽڵ�
+	   //添加第一个元素
 	     Element elementResultMap = rootElement.addElement("resultMap");
 	     RESULTMAPPER_ID_NAME = ManyPOJO1.getSimpleName()+RESULTMAPPER_ID_NAME;
 	     elementResultMap.addAttribute("id", RESULTMAPPER_ID_NAME);
@@ -585,7 +586,7 @@ public class PasteFactory {
 	     HashMap<String, String> tableInfoMany1 = new HashMap<String, String>();
 	     //tableInfo.put("tableName", tableName);
 	     /*
-	      * ����ResultMap,��װ��collectionOfTableInfo�б���Ϣ
+	      * 创建ResultMap,并装入collectionOfTableInfo中表信息
 	      */
 	     for (Field Manyfield1 : declaredFields) {
 	    	 
@@ -677,41 +678,41 @@ public class PasteFactory {
 	     
 	     collectionOfTableInfo.put(tableName1, tableInfoMany1);
 		
-		/*
-		 * ��Զ��ҳ�б�
+	/*
+		 * 多对多分页列表
 		 */
-	     createManyToManySelectListByPageSQL(rootElement, ManyPOJO1, identification1, tableName1, ManyPOJO2, identification2, tableName2, MappingTableName);
-	     
+		createManyToManySelectListByPageSQL(rootElement, ManyPOJO1, identification1, tableName1, ManyPOJO2, identification2, tableName2, MappingTableName);
+
 	     /*
-	      * �б�����
+	      * 列表条数
 	      */
-	     createSelectCountSQL(rootElement, tableName1);
-	     
+		createSelectCountSQL(rootElement, tableName1);
+
 		/*
-		 * ��Զ����,(�޼���)
+		 * 多对多添加,(无极联)
 		 */
-	     createManyToManyInsertWithRelationSQL(rootElement, ManyPOJO1, identification1, tableName1, ManyPOJO2, identification2, tableName2, MappingTableName, M_T_M_Field_1);
-	     
+		createManyToManyInsertWithRelationSQL(rootElement, ManyPOJO1, identification1, tableName1, ManyPOJO2, identification2, tableName2, MappingTableName, M_T_M_Field_1);
+
 	     /*
-	      * ��Զ�ɾ��(ͬʱɾ���м�����)
+	      * 多对多删除(同时删除中间表数据)
 	      */
-	     createManyToManyDeleteWithRelationSQL(rootElement, identification1, tableName1, MappingTableName);
-	     
+		createManyToManyDeleteWithRelationSQL(rootElement, identification1, tableName1, MappingTableName);
+
 	    /*
-	     * ��Զ���id��ѯ����
+	     * 多对多根据id查询对象
 	     */
-	     createManyToManySelectByPrimaryKeySQL(rootElement, ManyPOJO1, tableName1, identification1);
-	    
+		createManyToManySelectByPrimaryKeySQL(rootElement, ManyPOJO1, tableName1, identification1);
+
 	     /*
-	      * ��Զ��޸�(�޸��м�����)
+	      * 多对多修改(修改中间表数据)
 	      */
-	     createManyToManyUpdateByPrimaryKeySQL(rootElement, ManyPOJO1, identification1, identification2, tableName1, MappingTableName, M_T_M_Field_1);
-	      
-	     
-	     
-	     
+		createManyToManyUpdateByPrimaryKeySQL(rootElement, ManyPOJO1, identification1, identification2, tableName1, MappingTableName, M_T_M_Field_1);
+
+
+
+
 	     /*
-	      * ����XML
+	      * 创建XML
 	      */
 	     createXMLByRootDocument(rootDocument,ManyPOJO1);
 	     
@@ -724,18 +725,18 @@ public class PasteFactory {
 	/**
 	 * -----------------------------MANY TO MANY---------------------------------------------------
 	 */
-	
+
 	/**
-	 * 
-	 * @function ��Զ��ҳ�б�
-	 * @author ���಩
-	 * @time 2016-2-27 ����9:46:58
+	 *
+	 * @function 多对多分页列表
+	 * @author 吴相博
+	 * @time 2016-2-27 上午9:46:58
 	 */
 	private void createManyToManySelectListByPageSQL(Element rootElement,Class<?> ManyPOJO1,String identification1,String tableName1,Class<?> ManyPOJO2,String identification2,String tableName2,String MappingTableName){
 		
 		
 		   /*
-	      * ��Զ��ҳ�б�
+	      * 多对多分页列表
 	      */
 	     Element selectM_T_MListByPageEle = rootElement.addElement("select");
 	     String selectM_T_MListByPageSql = "selectM_T_MListByPage";
@@ -747,8 +748,8 @@ public class PasteFactory {
 	     
 	     collectionOfSqlInfo.put("selectO_T_MList", selectM_T_MListByPageInfo);
 	     
-	     /*
-	      * ԭ��SQL
+	      /*
+	      * 原型SQL
 	      */
 	     StringBuffer sql_selectM_T_MListByPageBuffer = new StringBuffer();
 	     sql_selectM_T_MListByPageBuffer.append("\n\tSELECT *")
@@ -781,7 +782,7 @@ public class PasteFactory {
 	     selectM_T_MComponentEle.addAttribute("resultType", ManyPOJO2.getName());
 	     
 	     /*
-	      * ��ҳ�б�Ƕ��SQL
+	      * 分页列表嵌套SQL
 	      *
 	      * <select id="selectRoleBySid" parameterType="int" resultType="org.wuxb.testMTMEntity.Role">
 			SELECT * FROM ssh_role,ssh_user_role WHERE ssh_role.rid=ssh_user_role.rid AND sid = #{sid}
@@ -861,7 +862,7 @@ public class PasteFactory {
 	     /*
 	      *
 	      * <insert id="insertMulti">
-			INSERT INTO ssh_user(username) VALUES('ȫ��');
+			INSERT INTO ssh_user(username) VALUES('全能');
 			INSERT INTO ssh_user_role (sid,rid) VALUES(LAST_INSERT_ID(),1);
 			INSERT INTO ssh_user_role (sid,rid) VALUES(LAST_INSERT_ID(),2);
 			INSERT INTO ssh_user_role (sid,rid) VALUES(LAST_INSERT_ID(),3);
@@ -913,7 +914,7 @@ public class PasteFactory {
 	     
 	     
 	     /*
-	      * 1.ɾ����������
+	      * 1.删除关联表数据
 	      */
 	     StringBuffer sql_deleteM_T_MRemoveRelationKeyBuffer = new StringBuffer();
 	     sql_deleteM_T_MRemoveRelationKeyBuffer
@@ -1023,8 +1024,8 @@ public class PasteFactory {
 	     
 	     
 	     
-	     /*
-	      * 1.ɾ���ϵ
+	    /*
+	      * 1.删除关系
 	      */
 	     StringBuffer sql_updateM_T_MEmptyRelationKeyBuffer = new StringBuffer();
 	     sql_updateM_T_MEmptyRelationKeyBuffer
@@ -1037,8 +1038,8 @@ public class PasteFactory {
 	     updateWithRelationShipByPrimaryKeyEle.addText(sql_updateM_T_MEmptyRelationKeyBuffer.toString());
 	     
 	     
-	     /*
-	      * ������еĹ�ϵ
+	      /*
+	      * 添加现有的关系
 	      */
 	     Element isListNullEle = updateWithRelationShipByPrimaryKeyEle.addElement("if");
 	     
@@ -1067,12 +1068,12 @@ public class PasteFactory {
 	/**
 	 * -----------------------------------ONE TO MANY----------------------------------------------------------
 	 */
-	
+
 	/**
-	 * 
-	 * @function һ�Զ��б��ѯ
-	 * @author ���಩
-	 * @time 2016-2-23 ����9:36:47
+	 *
+	 * @function 一对多列表查询
+	 * @author 吴相博
+	 * @time 2016-2-23 上午9:36:47
 	 */
 	private void createOneToManySelectListSQL(Element rootElement,Class<?> One_POJO,String One_POJO_tableName,String Many_POJO_tableName,
 			String One_POJOIdentification){
@@ -1097,12 +1098,12 @@ public class PasteFactory {
 	     selectO_T_MListEle.addText(sql_selectO_T_MListBuffer.toString());
 		
 	}
-	
+
 	/**
-	 * 
-	 * @function һ�Զ���ID��ѯ
-	 * @author ���಩
-	 * @time 2016-2-23 ����9:48:21
+	 *
+	 * @function 一对多根据ID查询
+	 * @author 吴相博
+	 * @time 2016-2-23 上午9:48:21
 	 */
 	private void createOneToManySelectByIdSQL(Element rootElement,Class<?> One_POJO,String One_POJO_tableName,String Many_POJO_tableName,
 			String One_POJOIdentification){
@@ -1131,13 +1132,13 @@ public class PasteFactory {
 	     
 		
 	}
-	
-	
+
+
 	/**
-	 * 
-	 * @function һ�Զ�ɾ��
-	 * @author ���಩
-	 * @time 2016-2-24 ����6:42:21
+	 *
+	 * @function 一对多删除
+	 * @author 吴相博
+	 * @time 2016-2-24 下午6:42:21
 	 */
 	private void createOneToManyDeleteSQL(Element rootElement,String One_POJO_tableName,String One_POJOIdentification,
 			String Many_POJO_tableName){
@@ -1149,7 +1150,7 @@ public class PasteFactory {
 	    
 	     
 	     /*
-	      * ɾ��һ���������
+	      * 删除一方表的内容
 	      */
 	     String deleteO_T_MByPrimaryKeySql = "deleteO_T_MByPrimaryKey";
 	     deleteO_T_MByPrimaryKeyEle.addAttribute("id", deleteO_T_MByPrimaryKeySql);
@@ -1167,7 +1168,7 @@ public class PasteFactory {
 	     .append(One_POJOIdentification).append(" = ").append("#{"+One_POJOIdentification+",jdbcType="+collectionOfJDBCAndJAVATypeConvert.get(idType)+"}\n\t");
 	     
 	     /*
-	      * �޸Ķ෽�������
+	      * 修改多方表的内容
 	      */
 	     StringBuffer sql_updateO_T_MRelationKeyBuffer = new StringBuffer();
 	     sql_updateO_T_MRelationKeyBuffer
@@ -1180,12 +1181,12 @@ public class PasteFactory {
 	     deleteO_T_MByPrimaryKeyEle.addText(sql_deleteO_T_MByPrimaryKeyBuffer.toString());
 		
 	};
-	
+
 	/**
-	 * 
-	 * @function һ�Զ�����޸�
-	 * @author ���಩
-	 * @time 2016-2-24 ����8:05:32
+	 *
+	 * @function 一对多关联修改
+	 * @author 吴相博
+	 * @time 2016-2-24 下午8:05:32
 	 */
 	private void createOneToManyWithRelationSQL(Element rootElement,Class<?> One_POJO,String Many_POJO_tableName,String One_POJOIdentification,
 			String One_POJO_tableName,String Many_POJOIdentification,String O_T_M_Field){
@@ -1202,8 +1203,8 @@ public class PasteFactory {
 	     
 	     
 	     
-	     /*
-	      * 1.�޸Ķ෽�������ΪNULL
+	      /*
+	      * 1.修改多方表的内容为NULL
 	      */
 	     StringBuffer sql_updateO_T_MEmptyRelationKeyBuffer = new StringBuffer();
 	     sql_updateO_T_MEmptyRelationKeyBuffer
@@ -1220,8 +1221,9 @@ public class PasteFactory {
 	     updateWithRelationShipByPrimaryKeyEle.addText(sql_updateO_T_MEmptyRelationKeyBuffer.toString());
 	     
 	     
+
 	     /*
-	      * ������еĹ�ϵ
+	      * 添加现有的关系
 	      */
 	     Element isListNullEle = updateWithRelationShipByPrimaryKeyEle.addElement("if");
 	     
@@ -1289,12 +1291,12 @@ public class PasteFactory {
 	/**
 	 * -----------------------------------MANY TO ONE-----------------------------------------------
 	 */
-	
+
 	/**
-	 * 
-	 * @function ���һ�޸�Sql
-	 * @author ���಩
-	 * @time 2016-2-22 ����8:06:04
+	 *
+	 * @function 多对一修改Sql
+	 * @author 吴相博
+	 * @time 2016-2-22 下午8:06:04
 	 */
 	private void createManyToOneUpdateSQL(Element rootElement,Class<?> Many_POJO,String Many_POJO_tableName,
 			String One_POJO_tableName,String M_T_O_Field,String One_POJOIdentification,String Many_POJOIdentification){
@@ -1349,10 +1351,10 @@ public class PasteFactory {
 		
 	}
 	/**
-	 * 
-	 * @function �������һ���ID��ѯ
-	 * @author ���಩
-	 * @time 2016-2-22 ����7:22:42
+	 *
+	 * @function 创建多对一根据ID查询
+	 * @author 吴相博
+	 * @time 2016-2-22 下午7:22:42
 	 */
 	private void createManyToOneSelectById(Element rootElement,Class<?> Many_POJO,String Many_POJO_tableName,String Many_POJOIdentification){
 		
@@ -1384,10 +1386,10 @@ public class PasteFactory {
 		
 	}
 	/**
-	 * 
-	 * @function �������һ���
-	 * @author ���಩
-	 * @time 2016-2-22 ����7:22:27
+	 *
+	 * @function 创建多对一添加
+	 * @author 吴相博
+	 * @time 2016-2-22 下午7:22:27
 	 */
 	private void createManyToOneInsertSQL(Element rootElement,Class<?> Many_POJO,
 			String Many_POJO_tableName,String One_POJO_tableName,String M_T_O_Field,
@@ -1460,10 +1462,10 @@ public class PasteFactory {
 		
 	}
 	/**
-	 * 
-	 * @function ���һ��SQL
-	 * @author ���಩
-	 * @time 2016-2-22 ����6:06:11
+	 *
+	 * @function 多对一基础SQL
+	 * @author 吴相博
+	 * @time 2016-2-22 下午6:06:11
 	 */
 	private void manyToOneBaseColumnSQL(Element rootElement,String Many_POJO_tableName,String One_POJOIdentification){
 		
@@ -1489,10 +1491,10 @@ public class PasteFactory {
 		
 	};
 	/**
-	 * 
-	 * @function ���һ��ҳSQL
-	 * @author ���಩
-	 * @time 2016-2-22 ����6:10:14
+	 *
+	 * @function 多对一分页SQL
+	 * @author 吴相博
+	 * @time 2016-2-22 下午6:10:14
 	 */
 	private void manyToOneSelectByPageSQL(Element rootElement,Class<?> Many_POJO,String Many_POJO_tableName,
 			String One_POJO_tableName,String One_POJOIdentification){
@@ -1522,15 +1524,15 @@ public class PasteFactory {
 	/**
 	 * -------------------------------SIMPLE POJO-------------------------------------------------
 	 */
-	
-	
+
+
 	/**
-	 * @serialNo 3.ִ������3.1
-	 * @function ��������SQL���
-	 * @author ���಩
-	 * @time 2016-2-21 ����6:48:36
-	 * @param rootElement ��Ԫ��
-	 * @param tableName ����
+	 * @serialNo 3.执行序列3.1
+	 * @function 创建基础公用SQL语句
+	 * @author 吴相博
+	 * @time 2016-2-21 下午6:48:36
+	 * @param rootElement 根元素
+	 * @param tableName 表名
 	 */
 	private void createBaseColumnSQL(Element rootElement,String tableName){
 
@@ -1555,13 +1557,13 @@ public class PasteFactory {
 		
 	}
 	/**
-	 * @serialNo 3.ִ������3.2
-	 * @function �����򵥷�ҳSQL���
-	 * @author ���಩
-	 * @time 2016-2-21 ����6:48:36
-	 * @param rootElement ��Ԫ��
-	 * @param tableName ����
-	 * @param cls �����
+	 * @serialNo 3.执行序列3.2
+	 * @function 创建简单分页SQL语句
+	 * @author 吴相博
+	 * @time 2016-2-21 下午6:48:36
+	 * @param rootElement 根元素
+	 * @param tableName 表名
+	 * @param cls 类对象
 	 */
 	private void createSimpleSelectByPageSQL(Element rootElement,String tableName,Class<?> cls){
 		
@@ -1590,12 +1592,12 @@ public class PasteFactory {
 		
 	};
 	/**
-	 * @serialNo 3.ִ������3.3
-	 * @function ��ѯ�б��������
-	 * @author ���಩
-	 * @time 2016-2-22 ����3:51:12
-	 * @param rootElement ��Ԫ��
-	 * @param tableName ����
+	 * @serialNo 3.执行序列3.3
+	 * @function 查询列表数据条数
+	 * @author 吴相博
+	 * @time 2016-2-22 下午3:51:12
+	 * @param rootElement 根元素
+	 * @param tableName 表名
 	 */
 	private void createSelectCountSQL(Element rootElement,String tableName){
 		
@@ -1617,14 +1619,14 @@ public class PasteFactory {
 		
 	}
 	/**
-	 * @serialNo 3.ִ������3.4
-	 * @function �������Ҷ���SQL
-	 * @author ���಩
-	 * @time 2016-2-21 ����6:48:36
-	 * @param rootElement ��Ԫ��
-	 * @param tableName ����
-	 * @param cls �����
-	 * @param identification �������ı�ʶ����
+	 * @serialNo 3.执行序列3.4
+	 * @function 创建查找对象SQL
+	 * @author 吴相博
+	 * @time 2016-2-21 下午6:48:36
+	 * @param rootElement 根元素
+	 * @param tableName 表名
+	 * @param cls 类对象
+	 * @param identification 该类对象的标识属性
 	 */
 	private void createSimpleSelectByIdSQL(Element rootElement,String tableName,Class<?> cls,String identification){
 
@@ -1658,13 +1660,13 @@ public class PasteFactory {
 		
 	};
 	/**
-	 * @serialNo 3.ִ������3.5
-	 * @function ����ɾ��SQL
-	 * @author ���಩
-	 * @time 2016-2-21 ����6:48:36
-	 * @param rootElement ��Ԫ��
-	 * @param tableName ����
-	 * @param identification �������ı�ʶ����
+	 * @serialNo 3.执行序列3.5
+	 * @function 创建删除SQL
+	 * @author 吴相博
+	 * @time 2016-2-21 下午6:48:36
+	 * @param rootElement 根元素
+	 * @param tableName 表名
+	 * @param identification 该类对象的标识属性
 	 */
 	private void createSimpleDeleteByIdSQL(Element rootElement,String tableName,String identification){
 		
@@ -1690,14 +1692,14 @@ public class PasteFactory {
 		
 	}
 	/**
-	 * @serialNo 3.ִ������3.6
-	 * @function �������Ӷ���SQL
-	 * @author ���಩
-	 * @time 2016-2-21 ����6:48:36
-	 * @param rootElement ��Ԫ��
-	 * @param tableName ����
-	 * @param cls �����
-	 * @param identification �������ı�ʶ����
+	 * @serialNo 3.执行序列3.6
+	 * @function 创建增加对象SQL
+	 * @author 吴相博
+	 * @time 2016-2-21 下午6:48:36
+	 * @param rootElement 根元素
+	 * @param tableName 表名
+	 * @param cls 类对象
+	 * @param identification 该类对象的标识属性
 	 */
 	private void createSimpleInsertSQL(Element rootElement,String tableName,Class<?> cls){
 		
@@ -1748,14 +1750,14 @@ public class PasteFactory {
 		
 	}
 	/**
-	 * @serialNo 3.ִ������3.7
-	 * @function �������¶���SQL
-	 * @author ���಩
-	 * @time 2016-2-21 ����6:48:36
-	 * @param rootElement ��Ԫ��
-	 * @param tableName ����
-	 * @param cls �����
-	 * @param identification �������ı�ʶ����
+	 * @serialNo 3.执行序列3.7
+	 * @function 创建更新对象SQL
+	 * @author 吴相博
+	 * @time 2016-2-21 下午6:48:36
+	 * @param rootElement 根元素
+	 * @param tableName 表名
+	 * @param cls 类对象
+	 * @param identification 该类对象的标识属性
 	 */
 	private void createSimpleUpdateSelectiveSQL(Element rootElement,String tableName,Class<?> cls,String identification){
 		
@@ -1801,12 +1803,12 @@ public class PasteFactory {
 	 * -----------------------------------------------------------------------------------
 	 */
 	/**
-	 * @serialNo 4.ִ������4
-	 * @function ����XML
-	 * @author ���಩
-	 * @time 2016-2-21 ����6:48:36
-	 * @param rootDocument ���ĵ�
-	 * @param cls �����
+	 * @serialNo 4.执行序列4
+	 * @function 创建XML
+	 * @author 吴相博
+	 * @time 2016-2-21 下午6:48:36
+	 * @param rootDocument 根文档
+	 * @param cls 类对象
 	 */
 	private void createXMLByRootDocument(Document rootDocument,Class<?> cls){
 		
@@ -1821,7 +1823,7 @@ public class PasteFactory {
 			e.printStackTrace();
 		}
 	   
-	     //��ʽ��xml
+	     //格式化xml
 	     OutputFormat format = new OutputFormat();
 	     format.setNewlines(true);
 	     format.setIndentSize(2);
